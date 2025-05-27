@@ -1,10 +1,7 @@
 package com.javanauta.usuario.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor // Construtor sem nenhum argumento;
 @Entity // Define como tabela;
 @Table(name = "usuario") // Atribui um nome a tabela;
-
+@Builder
 public class Usuario implements UserDetails {
     //Criando o ID
     @Id // Definindo um ID
