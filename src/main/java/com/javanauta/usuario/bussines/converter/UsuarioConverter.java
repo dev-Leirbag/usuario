@@ -42,16 +42,14 @@ public class UsuarioConverter {
         return telefoneDTO.stream().map(this::paraTelefone).toList();
     }
 
-
-
-
-
     public Telefone paraTelefone(TelefoneDTO telefoneDTO){
         return Telefone.builder()
                 .numero(telefoneDTO.getNumero())
                 .ddd(telefoneDTO.getDdd())
                 .build();
     }
+
+
 
     public UsuarioDTO paraUsuarioDTO(Usuario usuarioDTO) {
         return UsuarioDTO.builder()
