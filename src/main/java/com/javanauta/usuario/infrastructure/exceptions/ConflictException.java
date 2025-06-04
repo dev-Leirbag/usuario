@@ -7,6 +7,6 @@ public class ConflictException extends RuntimeException{
     }
 
     public ConflictException(String mensaqem, Throwable throwable){
-        super(mensaqem);
+        super(mensaqem, throwable);
     }
 }
