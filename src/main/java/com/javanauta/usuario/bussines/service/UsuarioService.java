@@ -1,4 +1,4 @@
-package com.javanauta.usuario.bussines;
+package com.javanauta.usuario.bussines.service;
 
 import com.javanauta.usuario.bussines.converter.UsuarioConverter;
 import com.javanauta.usuario.bussines.dto.EnderecoDTO;
