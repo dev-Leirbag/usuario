@@ -1,8 +1,7 @@
 package com.javanauta.usuario.adapters.in.controller;
 
-import com.javanauta.usuario.adapters.in.dto.EnderecoDTO;
-import com.javanauta.usuario.adapters.in.dto.TelefoneDTO;
-import com.javanauta.usuario.adapters.in.dto.UsuarioDTO;
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
+import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.application.service.UsuarioServiceImpl;
 import com.javanauta.usuario.application.service.ViaCepService;
 import com.javanauta.usuario.application.infrastructure.clients.ViaCepDTO;
@@ -35,18 +34,18 @@ public class UsuarioController {
     @Operation(summary = "Salva o usuario", description = "Cria e salva dados do usuario")
     @ApiResponse(responseCode = "200", description = "Usuario cadastrado com sucesso")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    public ResponseEntity<UsuarioDTO> salvaUsuario(@RequestBody UsuarioDTO usuarioDTO){
-        return ResponseEntity.ok(usuarioServiceImpl.salvaUsuario(usuarioDTO));
+    public ResponseEntity<UsuarioDtoResponse> salvaUsuario(@RequestBody UsuarioDtoResponse usuarioDtoResponse){
+        return ResponseEntity.ok(usuarioServiceImpl.salvaUsuario(usuarioDtoResponse));
     }
 
     @PostMapping("/login")
     @Operation(summary = "Faz o login do Usuario", description = "Login do usuario")
     @ApiResponse(responseCode = "200", description = "Login efetuado com sucesso")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    public String login(@RequestBody UsuarioDTO usuarioDTO){
+    public String login(@RequestBody UsuarioDtoRequest dtoRequest){
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(usuarioDTO.getEmail(),
-                        usuarioDTO.getSenha())
+                new UsernamePasswordAuthenticationToken(dtoRequest.getEmail(),
+                        dtoRequest.getSenha())
         );
         return "Bearer " + jwtUtil.generateToken(authentication.getName());
     }
@@ -55,7 +54,7 @@ public class UsuarioController {
     @Operation(summary = "Busca dados do usuario por Email", description = "Busca dados do usuario por email")
     @ApiResponse(responseCode = "200", description = "Email encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    public ResponseEntity<UsuarioDTO> buscaUsuarioPorEmail(@RequestParam("email") String email){
+    public ResponseEntity<UsuarioDtoResponse> buscaUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioServiceImpl.buscarUsuarioPorEmail(email));
     }
 
@@ -63,7 +62,7 @@ public class UsuarioController {
     @Operation(summary = "Deleta usuario por Email", description = "Deleta usuario por email")
     @ApiResponse(responseCode = "200", description = "Usuario deletado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    @ApiResponse(responseCode = "403", description = "Email não encotrado")
+    @ApiResponse(responseCode = "403", description = "Email não encontrado")
     public ResponseEntity<Void> deletaUsuarioPorEmail(@PathVariable String email){
         usuarioServiceImpl.deletaUsuarioPorEmaiil(email);
         return ResponseEntity.ok().build();
@@ -75,8 +74,8 @@ public class UsuarioController {
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     @ApiResponse(responseCode = "403", description = "Usuario não encontrado")
     @ApiResponse(responseCode = "401", description = "Usuario não autorizado")
-    public ResponseEntity<UsuarioDTO> atualizaDadosUsuario(@RequestBody UsuarioDTO dto,
-                                                           @RequestHeader("Authorization") String token){
+    public ResponseEntity<UsuarioDtoResponse> atualizaDadosUsuario(@RequestBody UsuarioDtoResponse dto,
+                                                                   @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(usuarioServiceImpl.atualizaDadosUsuario(dto, token));
     }
 

@@ -1,13 +1,9 @@
 package com.javanauta.usuario.application.service;
 
-import com.javanauta.usuario.adapters.in.dto.EnderecoDTO;
-import com.javanauta.usuario.adapters.in.dto.TelefoneDTO;
-import com.javanauta.usuario.adapters.in.dto.UsuarioDTO;
+import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.adapters.in.mapper.Converter;
 import com.javanauta.usuario.adapters.in.mapper.ConverterUpdate;
 import com.javanauta.usuario.adapters.in.service.IUsuarioService;
-import com.javanauta.usuario.adapters.out.entity.EnderecoEntity;
-import com.javanauta.usuario.adapters.out.entity.TelefoneEntity;
 import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
 import com.javanauta.usuario.application.domain.UsuarioDomain;
 import com.javanauta.usuario.application.infrastructure.exceptions.ConflictException;
@@ -34,15 +30,15 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     //Metodo para salvar o usuario.
-    public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO) {
-        emailExiste(usuarioDTO.getEmail()); // Verifica se o email do usuario já existe [true/false].
+    public UsuarioDtoResponse salvaUsuario(UsuarioDtoResponse usuarioDtoResponse) {
+        emailExiste(usuarioDtoResponse.getEmail()); // Verifica se o email do usuario já existe [true/false].
 
-        usuarioDTO.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));//Faz a encriptação da senha do usuario.
+        usuarioDtoResponse.setSenha(passwordEncoder.encode(usuarioDtoResponse.getSenha()));//Faz a encriptação da senha do usuario.
 
         UsuarioDomain usuarioDomain = usuarioRepository.salvaUsuario( //Chama a repository para realizar o save do usuario.
-                converter.paraDomain(usuarioDTO)); //Realiza a conversão de um UsuarioDTO para um UsuarioDomain.
+                converter.paraDomain(usuarioDtoResponse)); //Realiza a conversão de um UsuarioDTO para um UsuarioDomain.
 
-        return converter.paraDTO(usuarioDomain); //Retorna um UsuarioDTO já salvo no banco de dados.
+        return converter.paraDtoResponse(usuarioDomain); //Retorna um UsuarioDTO já salvo no banco de dados.
     }
 
     public void emailExiste(String email) {
@@ -63,10 +59,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     //Metodo para buscar dados do usuario por email.
-    public UsuarioDTO buscarUsuarioPorEmail(String email) {
+    public UsuarioDtoResponse buscarUsuarioPorEmail(String email) {
         try{
             //Converto para UsuarioDTO, passando como parametro o metodo da repository para buscar o email.
-            return converter.paraDTO(usuarioRepository.findByEmail(email).orElseThrow(
+            return converter.paraDtoResponse(usuarioRepository.findByEmail(email).orElseThrow(
                     //Caso o email não existe, ira rodar essa exceção;
                     () -> new ResourceNotFoundException("Email não encontrado " + email)));
         }catch (ResourceNotFoundException e){
@@ -80,7 +76,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public UsuarioDTO atualizaDadosUsuario(UsuarioDTO dto, String token){
+    public UsuarioDtoResponse atualizaDadosUsuario(UsuarioDtoResponse dto, String token){
             //Busco o email pelo token
             String email = jwtUtil.extractUsername(token.substring(7));
 
@@ -100,7 +96,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             UsuarioDomain domainAtualizado = converter.paraDomain(entity);
 
             //Retorno um UsuarioDTO já salvo
-            return converter.paraDTO(
+            return converter.paraDtoResponse(
                     converter.paraEntity(
                             usuarioRepository.salvaUsuario(domainAtualizado)));
 

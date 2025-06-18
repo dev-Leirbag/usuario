@@ -1,17 +1,15 @@
 package com.javanauta.usuario.adapters.in.service;
 
-import com.javanauta.usuario.adapters.in.dto.UsuarioDTO;
-
-import java.util.Optional;
+import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 
 public interface IUsuarioService {
 
-    UsuarioDTO salvaUsuario(UsuarioDTO dto);
+    UsuarioDtoResponse salvaUsuario(UsuarioDtoResponse dto);
 
-    UsuarioDTO buscarUsuarioPorEmail(String email);
+    UsuarioDtoResponse buscarUsuarioPorEmail(String email);
 
     void deletaUsuarioPorEmaiil (String email);
 
-    UsuarioDTO atualizaDadosUsuario (UsuarioDTO dto, String token);
+    UsuarioDtoResponse atualizaDadosUsuario (UsuarioDtoResponse dto, String token);
 
 }

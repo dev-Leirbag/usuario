@@ -1,4 +1,4 @@
-package com.javanauta.usuario.adapters.in.dto;
+package com.javanauta.usuario.adapters.in.dto.response;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsuarioDTO {
+public class UsuarioDtoResponse {
 
     private String nome;
     private String email;

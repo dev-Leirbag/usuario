@@ -1,8 +1,9 @@
 package com.javanauta.usuario.adapters.in.mapper;
 
-import com.javanauta.usuario.adapters.in.dto.EnderecoDTO;
-import com.javanauta.usuario.adapters.in.dto.TelefoneDTO;
-import com.javanauta.usuario.adapters.in.dto.UsuarioDTO;
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
+import com.javanauta.usuario.adapters.in.dto.response.EnderecoDTO;
+import com.javanauta.usuario.adapters.in.dto.response.TelefoneDTO;
+import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.adapters.out.entity.EnderecoEntity;
 import com.javanauta.usuario.adapters.out.entity.TelefoneEntity;
 import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
@@ -19,16 +20,24 @@ public interface Converter {
     //Conversão de Usuario
 
     //Para Domain
-    UsuarioDomain paraDomain(UsuarioDTO dto); //Retorna um UsuarioDomain passando um UsuarioDTO.
+    UsuarioDomain paraDomain(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioDomain passando um UsuarioDtoResponse.
     UsuarioDomain paraDomain(UsuarioEntity entity); //Retorna um UsuarioDomain passando um UsuarioEntity.
+    UsuarioDomain paraDomain(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDomain passando um UsuarioDtoRequest.
 
     //Para Entity
     UsuarioEntity paraEntity(UsuarioDomain domain); //Retorna um UsuarioEntity passando um UsuarioDomain.
-    UsuarioEntity paraEntity(UsuarioDTO dto); //Retorna um UsuarioEntity passando um UsuarioDTO.
+    UsuarioEntity paraEntity(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioEntity passando um UsuarioDtoResponse.
+    UsuarioEntity paraEntity(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioEntity passando um UsuarioDtoRequest.
 
-    //Para DTO
-    UsuarioDTO paraDTO(UsuarioDomain domain); //Retorna um UsuarioDTo passando um UsuarioDomain.
-    UsuarioDTO paraDTO(UsuarioEntity entity); //Retorna um UsuarioDTo passando um UsuarioEntity.
+    //Para DtoResponse
+    UsuarioDtoResponse paraDtoResponse(UsuarioDomain domain); //Retorna um UsuarioDto passando um UsuarioDomain.
+    UsuarioDtoResponse paraDtoResponse(UsuarioEntity entity); //Retorna um UsuarioDto passando um UsuarioEntity.
+    UsuarioDtoResponse paraDtoResponse(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioDtoRequest.
+
+    //Para DtoRequest
+    UsuarioDtoRequest paraDtoRequest(UsuarioDomain domain);//Retorna um UsuarioDtoRequest passando um UsuarioDomain.
+    UsuarioDtoRequest paraDtoRequest(UsuarioEntity entity); //Retorna um UsuarioDtoRequest passando um UsuarioEntity.
+    UsuarioDtoRequest paraDtoRequest(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioDtoRequest passando um UsuarioDtoResponse.
 
     //Conversão de Endereço
 
@@ -49,12 +58,12 @@ public interface Converter {
     EnderecoEntity paraEntity(EnderecoDTO dto); //Retorna um EnderecoEntity passando um EnderecoDTO.
 
     //Para DTO
-    EnderecoDTO paraDTO(EnderecoDomain domain); //Retorna um EnderecoDTO passando um EnderecoDomain.
+    EnderecoDTO paraDtoResponse(EnderecoDomain domain); //Retorna um EnderecoDTO passando um EnderecoDomain.
     List<EnderecoDTO> paraListaDT(List<EnderecoDomain> domainList); //Retorna uma lista de EnderecoDTO,
     // passando uma lista de EnderecoDomain.
     List<EnderecoDTO> paraListaDTOo(List<EnderecoEntity> entityList); //Retorna uma lista de EnderecoDTO,
     // passando uma lista de EnderecoEntity.
-    EnderecoDTO paraDTO(EnderecoEntity entity); //Retorna um EnderecoDTO passando um EnderecoEntity.
+    EnderecoDTO paraDtoResponse(EnderecoEntity entity); //Retorna um EnderecoDTO passando um EnderecoEntity.
 
 
 
@@ -107,12 +116,12 @@ public interface Converter {
     // passando uma lista de telefoneDTO.
     TelefoneEntity paraEntity(TelefoneDTO dto); //Retorna um telefoneEntity passando um telefoneDTO.
 
-    //Para DTO
-    TelefoneDTO paraDTO(TelefoneDomain domain); //Retorna um telefoneDTO passando um telefoneDomain.
-    List<TelefoneDTO> paraListaDTO(List<TelefoneDomain> domainList); //Retorna uma lista de telefoneDTO,
+    //Para DTO Response
+    TelefoneDTO paraDtoResponse(TelefoneDomain domain); //Retorna um telefoneDTO passando um telefoneDomain.
+    List<TelefoneDTO> paraListaDtoResponse(List<TelefoneDomain> domainList); //Retorna uma lista de telefoneDTO,
     // passando uma lista de telefoneDomain.
-    List<TelefoneDTO> paraListaDTOO(List<TelefoneEntity> entityList); //Retorna uma lista de telefoneDTO,
+    List<TelefoneDTO> paraListaDtoResponsee(List<TelefoneEntity> entityList); //Retorna uma lista de telefoneDTO,
     // passando uma lista de telefoneEntity.
-    TelefoneDTO paraDTO(TelefoneEntity entity); //Retornna um telefoneDTO passando uma lista de telefoneEntity.
+    TelefoneDTO paraDtoResponse(TelefoneEntity entity); //Retornna um telefoneDTO passando uma lista de telefoneEntity.
 
 }

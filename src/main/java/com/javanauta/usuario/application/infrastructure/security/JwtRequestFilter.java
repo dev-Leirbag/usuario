@@ -46,11 +46,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 // Valida o token JWT
                 if (jwtUtil.validateToken(token, username)) {
+                    System.out.println("Usuário autenticado com sucesso");
                     // Cria um objeto de autenticação com as informações do usuário
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     // Define a autenticação no contexto de segurança
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                }else{
+                    System.out.println("Token inválido ou expirado");
                 }
             }
         }

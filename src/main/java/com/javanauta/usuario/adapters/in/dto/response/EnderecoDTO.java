@@ -1,4 +1,4 @@
-package com.javanauta.usuario.adapters.in.dto;
+package com.javanauta.usuario.adapters.in.dto.response;
 
 import lombok.*;
 
