@@ -1,6 +1,7 @@
 package com.javanauta.usuario.adapters.in.controller;
 
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.application.service.UsuarioServiceImpl;
 import com.javanauta.usuario.application.service.ViaCepService;
@@ -74,8 +75,8 @@ public class UsuarioController {
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     @ApiResponse(responseCode = "403", description = "Usuario não encontrado")
     @ApiResponse(responseCode = "401", description = "Usuario não autorizado")
-    public ResponseEntity<UsuarioDtoResponse> atualizaDadosUsuario(@RequestBody UsuarioDtoResponse dto,
-                                                                   @RequestHeader("Authorization") String token){
+    public ResponseEntity<UsuarioUpdateDtoRequest> atualizaDadosUsuario(@RequestBody UsuarioUpdateDtoRequest dto,
+                                                                        @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(usuarioServiceImpl.atualizaDadosUsuario(dto, token));
     }
 

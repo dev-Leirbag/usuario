@@ -1,5 +1,6 @@
 package com.javanauta.usuario.application.service;
 
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.adapters.in.mapper.Converter;
 import com.javanauta.usuario.adapters.in.mapper.ConverterUpdate;
@@ -60,12 +61,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     //Metodo para buscar dados do usuario por email.
     public UsuarioDtoResponse buscarUsuarioPorEmail(String email) {
-        try{
+        try {
             //Converto para UsuarioDTO, passando como parametro o metodo da repository para buscar o email.
             return converter.paraDtoResponse(usuarioRepository.findByEmail(email).orElseThrow(
                     //Caso o email não existe, ira rodar essa exceção;
                     () -> new ResourceNotFoundException("Email não encontrado " + email)));
-        }catch (ResourceNotFoundException e){
+        } catch (ResourceNotFoundException e) {
             throw new ResourceNotFoundException("Email não encontrado " + email);
         }
     }
@@ -76,29 +77,30 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public UsuarioDtoResponse atualizaDadosUsuario(UsuarioDtoResponse dto, String token){
-            //Busco o email pelo token
-            String email = jwtUtil.extractUsername(token.substring(7));
+    public UsuarioUpdateDtoRequest atualizaDadosUsuario(UsuarioUpdateDtoRequest updateDtoRequest, String token) {
+        //Busco o email pelo token
+        String email = jwtUtil.extractUsername(token.substring(7));
 
-            //Criptografo a senha novamente.
-            dto.setSenha(dto.getSenha() != null ? passwordEncoder.encode(dto.getSenha()) : null);
+        //Criptografo a senha novamente.
+        updateDtoRequest.setSenha(updateDtoRequest.getSenha() != null ? passwordEncoder.encode(updateDtoRequest.getSenha()) : null);
 
-            //Transformando o email fornecido em um UsuarioDomain e buscando as informações desse email no BD.
-            UsuarioDomain domain = usuarioRepository.findByEmail(email).orElseThrow(
-                    () -> new ResourceNotFoundException("Email não encontrado " + email));
+        //Transformando o email fornecido em um UsuarioDomain e buscando as informações desse email no BD.
+        UsuarioDomain domain = usuarioRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("Email não encontrado " + email));
 
-            //Converto o UsuarioDomain para UsuarioEntity
-            UsuarioEntity entity = converter.paraEntity(domain);
+        //Converto o UsuarioDomain para UsuarioEntity
+        UsuarioEntity entity = converter.paraEntity(domain);
 
-            //Mesclo as informações
-            converterUpdate.updateUsuario(dto, entity);
+        //Mesclo as informações
+        converterUpdate.updateUsuario(updateDtoRequest, entity);
 
-            UsuarioDomain domainAtualizado = converter.paraDomain(entity);
+        //Converto para domain e chamo o metodo de atualizar na repository.
+        UsuarioDomain domainAtualizado = usuarioRepository.atualizaDadosUsuario(converter.paraDomain(entity));
 
-            //Retorno um UsuarioDTO já salvo
-            return converter.paraDtoResponse(
-                    converter.paraEntity(
-                            usuarioRepository.salvaUsuario(domainAtualizado)));
+        //Retorno um UsuarioDTO já salvo
+        return converter.paraUpdateDto(
+                converter.paraEntity(
+                        usuarioRepository.salvaUsuario(domainAtualizado)));
 
     }
 

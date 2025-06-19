@@ -7,8 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsuarioDtoRequest {
 
+public class UsuarioUpdateDtoRequest {
+
+    private String nome;
     private String email;
     private String senha;
 

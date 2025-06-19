@@ -1,6 +1,7 @@
 package com.javanauta.usuario.adapters.in.mapper;
 
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.EnderecoDTO;
 import com.javanauta.usuario.adapters.in.dto.response.TelefoneDTO;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
@@ -23,21 +24,32 @@ public interface Converter {
     UsuarioDomain paraDomain(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioDomain passando um UsuarioDtoResponse.
     UsuarioDomain paraDomain(UsuarioEntity entity); //Retorna um UsuarioDomain passando um UsuarioEntity.
     UsuarioDomain paraDomain(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDomain passando um UsuarioDtoRequest.
+    UsuarioDomain paraDomain(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioDomain passando um UsuarioUpdateDtoRequest.
 
     //Para Entity
     UsuarioEntity paraEntity(UsuarioDomain domain); //Retorna um UsuarioEntity passando um UsuarioDomain.
     UsuarioEntity paraEntity(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioEntity passando um UsuarioDtoResponse.
     UsuarioEntity paraEntity(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioEntity passando um UsuarioDtoRequest.
+    UsuarioEntity paraEntity(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioEntity passando um UsuarioUpdateDtoRequest.
 
     //Para DtoResponse
     UsuarioDtoResponse paraDtoResponse(UsuarioDomain domain); //Retorna um UsuarioDto passando um UsuarioDomain.
     UsuarioDtoResponse paraDtoResponse(UsuarioEntity entity); //Retorna um UsuarioDto passando um UsuarioEntity.
     UsuarioDtoResponse paraDtoResponse(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioDtoRequest.
+    UsuarioDtoResponse paraDtoRespone(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioUpdateDtoRequest.
 
     //Para DtoRequest
     UsuarioDtoRequest paraDtoRequest(UsuarioDomain domain);//Retorna um UsuarioDtoRequest passando um UsuarioDomain.
     UsuarioDtoRequest paraDtoRequest(UsuarioEntity entity); //Retorna um UsuarioDtoRequest passando um UsuarioEntity.
     UsuarioDtoRequest paraDtoRequest(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioDtoRequest passando um UsuarioDtoResponse.
+    UsuarioDtoRequest paraDtoRequest(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioDtoRequest passando um UsuarioUpdateDtoRequest.
+
+    //Para UpdateDtoRequest
+    UsuarioUpdateDtoRequest paraUpdateDto(UsuarioDomain domain); //Retorna um UsuarioUpdateDtoRequest passando um UsuarioDomain.
+    UsuarioUpdateDtoRequest paraUpdateDto(UsuarioEntity entity); //Retorna um UsuarioUpdateDtoRequest passando um UsuarioEntity.
+    UsuarioUpdateDtoRequest paraUpdateDto(UsuarioDtoResponse dtoResponse); //Retorna um UsuarioUpdateDtoRequest passando um UsuarioDtoResponse.
+    UsuarioUpdateDtoRequest paraUpdateDto(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioUpdateDtoRequest passando um UsuarioDtoRequest.
+
 
     //Conversão de Endereço
 

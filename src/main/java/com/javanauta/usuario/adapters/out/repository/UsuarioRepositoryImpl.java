@@ -43,5 +43,12 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
         jpaRepository.deleteByEmail(email);
     }
 
+    @Override
+    public UsuarioDomain atualizaDadosUsuario(UsuarioDomain domain) {
+        UsuarioEntity entitySalvo = jpaRepository.save(converter.paraEntity(domain));
+
+        return converter.paraDomain(entitySalvo);
+    }
+
 
 }

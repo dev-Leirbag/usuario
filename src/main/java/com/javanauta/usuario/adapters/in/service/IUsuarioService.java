@@ -1,5 +1,6 @@
 package com.javanauta.usuario.adapters.in.service;
 
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 
 public interface IUsuarioService {
@@ -10,6 +11,6 @@ public interface IUsuarioService {
 
     void deletaUsuarioPorEmaiil (String email);
 
-    UsuarioDtoResponse atualizaDadosUsuario (UsuarioDtoResponse dto, String token);
+    UsuarioUpdateDtoRequest atualizaDadosUsuario (UsuarioUpdateDtoRequest updateDtoRequest, String token);
 
 }

@@ -16,4 +16,6 @@ public interface IUsuarioRepository {
     @Transactional
     void deleteByEmail(String email);
 
+    UsuarioDomain atualizaDadosUsuario(UsuarioDomain domain);
+
 }
