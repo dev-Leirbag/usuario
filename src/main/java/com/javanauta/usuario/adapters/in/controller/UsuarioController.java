@@ -2,7 +2,10 @@ package com.javanauta.usuario.adapters.in.controller;
 
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
+import com.javanauta.usuario.adapters.in.dto.response.EnderecoDTO;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
+import com.javanauta.usuario.adapters.in.service.IEnderecoService;
+import com.javanauta.usuario.adapters.in.service.IUsuarioService;
 import com.javanauta.usuario.application.service.UsuarioServiceImpl;
 import com.javanauta.usuario.application.service.ViaCepService;
 import com.javanauta.usuario.application.infrastructure.clients.ViaCepDTO;
@@ -26,7 +29,8 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UsuarioController {
 
-    private final UsuarioServiceImpl usuarioServiceImpl;
+    private final IUsuarioService usuarioService;
+    private final IEnderecoService enderecoService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final ViaCepService viaCepService;
@@ -36,7 +40,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "200", description = "Usuario cadastrado com sucesso")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<UsuarioDtoResponse> salvaUsuario(@RequestBody UsuarioDtoResponse usuarioDtoResponse){
-        return ResponseEntity.ok(usuarioServiceImpl.salvaUsuario(usuarioDtoResponse));
+        return ResponseEntity.ok(usuarioService.salvaUsuario(usuarioDtoResponse));
     }
 
     @PostMapping("/login")
@@ -56,7 +60,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "200", description = "Email encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<UsuarioDtoResponse> buscaUsuarioPorEmail(@RequestParam("email") String email){
-        return ResponseEntity.ok(usuarioServiceImpl.buscarUsuarioPorEmail(email));
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
     }
 
     @DeleteMapping("/{email}")
@@ -65,7 +69,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     @ApiResponse(responseCode = "403", description = "Email não encontrado")
     public ResponseEntity<Void> deletaUsuarioPorEmail(@PathVariable String email){
-        usuarioServiceImpl.deletaUsuarioPorEmaiil(email);
+        usuarioService.deletaUsuarioPorEmaiil(email);
         return ResponseEntity.ok().build();
     }
 
@@ -77,18 +81,18 @@ public class UsuarioController {
     @ApiResponse(responseCode = "401", description = "Usuario não autorizado")
     public ResponseEntity<UsuarioUpdateDtoRequest> atualizaDadosUsuario(@RequestBody UsuarioUpdateDtoRequest dto,
                                                                         @RequestHeader("Authorization") String token){
-        return ResponseEntity.ok(usuarioServiceImpl.atualizaDadosUsuario(dto, token));
+        return ResponseEntity.ok(usuarioService.atualizaDadosUsuario(dto, token));
     }
 
-//    @PutMapping("/endereco")
-//    @Operation(summary = "Altera dados de Endereço do Usuario", description = "Altera dados de endereço do usuario")
-//    @ApiResponse(responseCode = "200", description = "Dados do endereço alterados")
-//    @ApiResponse(responseCode = "500", description = "Erro de servidor")
-//    @ApiResponse(responseCode = "403", description = "Endereço não encontrado")
-//    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO dto,
-//                                                        @RequestParam("id") Long id){
-//        return ResponseEntity.ok(usuarioServiceImpl.atualizaEndereco(id, dto));
-//    }
+    @PutMapping("/endereco")
+    @Operation(summary = "Altera dados de Endereço do Usuario", description = "Altera dados de endereço do usuario")
+    @ApiResponse(responseCode = "200", description = "Dados do endereço alterados")
+    @ApiResponse(responseCode = "500", description = "Erro de servidor")
+    @ApiResponse(responseCode = "403", description = "Endereço não encontrado")
+    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO dto,
+                                                        @RequestParam("id") Long id){
+        return ResponseEntity.ok(enderecoService.atualizaEndereco(dto, id));
+    }
 //
 //    @PutMapping("/telefone")
 //    @Operation(summary = "Altera dados de Telefone do Usuario", description = "Altera dados de Telefone do usuario")
@@ -100,14 +104,14 @@ public class UsuarioController {
 //        return ResponseEntity.ok(usuarioServiceImpl.atualizaTelefone(id, dto));
 //    }
 //
-//    @PostMapping("/endereco")
-//    @Operation(summary = "Salva o endereço do Usuario", description = "Cria e salva o endereço do usuario")
-//    @ApiResponse(responseCode = "200", description = "Endereço cadastrado com sucesso")
-//    @ApiResponse(responseCode = "500", description = "Erro de servidor")
-//    public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO dto,
-//                                                        @RequestHeader("Authorization") String token) {
-//        return ResponseEntity.ok(usuarioServiceImpl.cadastraEndereco(token, dto));
-//    }
+    @PostMapping("/endereco")
+    @Operation(summary = "Salva o endereço do Usuario", description = "Cria e salva o endereço do usuario")
+    @ApiResponse(responseCode = "200", description = "Endereço cadastrado com sucesso")
+    @ApiResponse(responseCode = "500", description = "Erro de servidor")
+    public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO dto,
+                                                        @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(enderecoService.cadastraEndereco(dto,token));
+    }
 //
 //    @PostMapping("/telefone")
 //    @Operation(summary = "Salva o Telefone do Usuario", description = "Cria e salva o telefone do usuario")

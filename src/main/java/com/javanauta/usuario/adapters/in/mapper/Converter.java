@@ -11,7 +11,7 @@ import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
 import com.javanauta.usuario.application.domain.EnderecoDomain;
 import com.javanauta.usuario.application.domain.TelefoneDomain;
 import com.javanauta.usuario.application.domain.UsuarioDomain;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -33,9 +33,9 @@ public interface Converter {
     UsuarioEntity paraEntity(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioEntity passando um UsuarioUpdateDtoRequest.
 
     //Para DtoResponse
-    UsuarioDtoResponse paraDtoResponse(UsuarioDomain domain); //Retorna um UsuarioDto passando um UsuarioDomain.
-    UsuarioDtoResponse paraDtoResponse(UsuarioEntity entity); //Retorna um UsuarioDto passando um UsuarioEntity.
-    UsuarioDtoResponse paraDtoResponse(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioDtoRequest.
+    UsuarioDtoResponse paraDto(UsuarioDomain domain); //Retorna um UsuarioDto passando um UsuarioDomain.
+    UsuarioDtoResponse paraDto(UsuarioEntity entity); //Retorna um UsuarioDto passando um UsuarioEntity.
+    UsuarioDtoResponse paraDto(UsuarioDtoRequest dtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioDtoRequest.
     UsuarioDtoResponse paraDtoRespone(UsuarioUpdateDtoRequest updateDtoRequest); //Retorna um UsuarioDtoResponse passando um UsuarioUpdateDtoRequest.
 
     //Para DtoRequest
@@ -59,7 +59,12 @@ public interface Converter {
     // passando uma lista de EnderecoEntity.
     List<EnderecoDomain> paraListaDo(List<EnderecoDTO> dtoList); //Retorna uma lista de EnderecoDomain,
     // passando uma lista de EnderecoDTO.
-    EnderecoDomain paraDomain(EnderecoDTO dto); //Retorna um EnderecoDomain passando um EnderecoDTO.
+    @Mapping(target = "usuario_id", ignore = true)
+    EnderecoDomain paraDomain(EnderecoDTO dto, @Context Long idUsuario); //Retorna um EnderecoDomain passando um EnderecoDTO.
+    @AfterMapping
+            default  void setUsuarioId(@MappingTarget EnderecoDomain domain, @Context Long usuarioId){
+        domain.setUsuario_id(usuarioId);
+    }
 
     //Para Entity
     EnderecoEntity paraEntity(EnderecoDomain domain); //Retorna um EnderecoEntity passando um EnderecoDomain.
@@ -70,37 +75,14 @@ public interface Converter {
     EnderecoEntity paraEntity(EnderecoDTO dto); //Retorna um EnderecoEntity passando um EnderecoDTO.
 
     //Para DTO
-    EnderecoDTO paraDtoResponse(EnderecoDomain domain); //Retorna um EnderecoDTO passando um EnderecoDomain.
+    EnderecoDTO paraDto(EnderecoDomain domain); //Retorna um EnderecoDTO passando um EnderecoDomain.
     List<EnderecoDTO> paraListaDT(List<EnderecoDomain> domainList); //Retorna uma lista de EnderecoDTO,
     // passando uma lista de EnderecoDomain.
     List<EnderecoDTO> paraListaDTOo(List<EnderecoEntity> entityList); //Retorna uma lista de EnderecoDTO,
     // passando uma lista de EnderecoEntity.
-    EnderecoDTO paraDtoResponse(EnderecoEntity entity); //Retorna um EnderecoDTO passando um EnderecoEntity.
+    EnderecoDTO paraDto(EnderecoEntity entity); //Retorna um EnderecoDTO passando um EnderecoEntity.
 
 
-
-//    public UsuarioEntity updateUsuario(UsuarioDTO usuarioDTO, UsuarioEntity entity) {
-//        return UsuarioEntity.builder()
-//                .nome(usuarioDTO.getNome() != null ? usuarioDTO.getNome() : entity.getNome())
-//                .id(entity.getId())
-//                .senha(usuarioDTO.getSenha() != null ? usuarioDTO.getSenha() : entity.getSenha())
-//                .email(usuarioDTO.getEmail() != null ? usuarioDTO.getEmail() : entity.getEmail())
-//                .enderecoEntities(entity.getEnderecoEntities())
-//                .telefoneEntities(entity.getTelefoneEntities())
-//                .build();
-//    }
-//
-//    public EnderecoEntity updateEndereco(EnderecoDTO dto, EnderecoEntity entity){
-//        return EnderecoEntity.builder()
-//                .id(entity.getId())
-//                .rua(dto.getRua() != null ? dto.getRua() : entity.getRua())
-//                .numero(dto.getNumero() != null ? dto.getNumero() : entity.getNumero())
-//                .cidade(dto.getCidade() != null ? dto.getCidade() : entity.getCidade())
-//                .cep(dto.getCep() != null ? dto.getCep() : entity.getCep())
-//                .complemento(dto.getComplemento() != null ? dto.getComplemento() : entity.getComplemento())
-//                .estado(dto.getEstado() != null ? dto.getEstado() : entity.getEstado())
-//                .build();
-//    }
 //
 //    public TelefoneEntity updateTelefone(TelefoneDTO dto, TelefoneEntity entity){
 //        return TelefoneEntity.builder()
@@ -129,11 +111,11 @@ public interface Converter {
     TelefoneEntity paraEntity(TelefoneDTO dto); //Retorna um telefoneEntity passando um telefoneDTO.
 
     //Para DTO Response
-    TelefoneDTO paraDtoResponse(TelefoneDomain domain); //Retorna um telefoneDTO passando um telefoneDomain.
+    TelefoneDTO paraDto(TelefoneDomain domain); //Retorna um telefoneDTO passando um telefoneDomain.
     List<TelefoneDTO> paraListaDtoResponse(List<TelefoneDomain> domainList); //Retorna uma lista de telefoneDTO,
     // passando uma lista de telefoneDomain.
     List<TelefoneDTO> paraListaDtoResponsee(List<TelefoneEntity> entityList); //Retorna uma lista de telefoneDTO,
     // passando uma lista de telefoneEntity.
-    TelefoneDTO paraDtoResponse(TelefoneEntity entity); //Retornna um telefoneDTO passando uma lista de telefoneEntity.
+    TelefoneDTO paraDto(TelefoneEntity entity); //Retornna um telefoneDTO passando uma lista de telefoneEntity.
 
 }

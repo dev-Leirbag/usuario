@@ -1,11 +1,8 @@
 package com.javanauta.usuario.application.infrastructure.security;
 
 
-import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
-import com.javanauta.usuario.adapters.out.repository.UsuarioJpaRepository;
-import com.javanauta.usuario.adapters.out.repository.UsuarioRepositoryImpl;
+import com.javanauta.usuario.adapters.out.repository.usuariorepository.UsuarioRepositoryImpl;
 import com.javanauta.usuario.application.domain.UsuarioDomain;
-import com.javanauta.usuario.porters.out.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -10,7 +10,7 @@ import com.javanauta.usuario.application.domain.UsuarioDomain;
 import com.javanauta.usuario.application.infrastructure.exceptions.ConflictException;
 import com.javanauta.usuario.application.infrastructure.exceptions.ResourceNotFoundException;
 import com.javanauta.usuario.application.infrastructure.security.JwtUtil;
-import com.javanauta.usuario.porters.out.EnderecoRepository;
+import com.javanauta.usuario.porters.out.IEnderecoRepository;
 import com.javanauta.usuario.porters.out.IUsuarioRepository;
 import com.javanauta.usuario.porters.out.TelefoneRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private final ConverterUpdate converterUpdate;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final EnderecoRepository enderecoRepository;
-    private final TelefoneRepository telefoneRepository;
 
     @Override
     //Metodo para salvar o usuario.
@@ -39,7 +37,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         UsuarioDomain usuarioDomain = usuarioRepository.salvaUsuario( //Chama a repository para realizar o save do usuario.
                 converter.paraDomain(usuarioDtoResponse)); //Realiza a conversão de um UsuarioDTO para um UsuarioDomain.
 
-        return converter.paraDtoResponse(usuarioDomain); //Retorna um UsuarioDTO já salvo no banco de dados.
+        return converter.paraDto(usuarioDomain); //Retorna um UsuarioDTO já salvo no banco de dados.
     }
 
     public void emailExiste(String email) {
@@ -63,7 +61,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public UsuarioDtoResponse buscarUsuarioPorEmail(String email) {
         try {
             //Converto para UsuarioDTO, passando como parametro o metodo da repository para buscar o email.
-            return converter.paraDtoResponse(usuarioRepository.findByEmail(email).orElseThrow(
+            return converter.paraDto(usuarioRepository.findByEmail(email).orElseThrow(
                     //Caso o email não existe, ira rodar essa exceção;
                     () -> new ResourceNotFoundException("Email não encontrado " + email)));
         } catch (ResourceNotFoundException e) {
@@ -99,20 +97,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
         //Retorno um UsuarioDTO já salvo
         return converter.paraUpdateDto(
-                converter.paraEntity(
-                        usuarioRepository.salvaUsuario(domainAtualizado)));
+                usuarioRepository.salvaUsuario(domainAtualizado));
 
     }
 
-//    public EnderecoDTO atualizaEndereco(Long idEndereco, EnderecoDTO enderecoDTO){
-//        EnderecoEntity entity = enderecoRepository.findById(idEndereco).orElseThrow(
-//                () -> new ResourceNotFoundException("ID não encontrado" + idEndereco));
-//
-//        EnderecoEntity enderecoEntity = usuarioConverter.updateEndereco(enderecoDTO, entity);
-//
-//        return usuarioConverter.paraEnderecoDTO(enderecoRepository.save(enderecoEntity));
-//    }
-//
 //    public TelefoneDTO atualizaTelefone(Long idTelefone, TelefoneDTO telefoneDTO){
 //        TelefoneEntity entity = telefoneRepository.findById(idTelefone).orElseThrow(
 //                () -> new ResourceNotFoundException("ID não encontrado" + idTelefone));
@@ -122,18 +110,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 //        return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefoneEntity));
 //    }
 //
-//    public EnderecoDTO cadastraEndereco(String token, EnderecoDTO dto){
-//        String email = jwtUtil.extractUsername(token.substring(7));
-//
-//        UsuarioEntity usuarioEntity = usuarioRepository.findByEmail(email).orElseThrow(
-//                () -> new ResourceNotFoundException("Email não encontrado " + email));
-//
-//        EnderecoEntity endereco = usuarioConverter.paraEnderecoEntity(dto, usuarioEntity.getId());
-//        EnderecoEntity enderecoEntity = enderecoRepository.save(endereco);
-//
-//        return usuarioConverter.paraEnderecoDTO(enderecoRepository.save(enderecoEntity));
-//    }
-//
+
 //    public TelefoneDTO cadastraTelefone(String token, TelefoneDTO dto){
 //        String email = jwtUtil.extractUsername(token.substring(7));
 //

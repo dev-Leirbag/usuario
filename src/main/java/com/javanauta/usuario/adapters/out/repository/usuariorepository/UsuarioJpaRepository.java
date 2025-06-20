@@ -1,4 +1,4 @@
-package com.javanauta.usuario.adapters.out.repository;
+package com.javanauta.usuario.adapters.out.repository.usuariorepository;
 
 import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
 import jakarta.transaction.Transactional;
