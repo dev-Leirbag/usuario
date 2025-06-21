@@ -2,7 +2,6 @@ package com.javanauta.usuario.application.domain;
 
 import java.util.List;
 
-
 public class UsuarioDomain{
     //Atributos
     private Long id;

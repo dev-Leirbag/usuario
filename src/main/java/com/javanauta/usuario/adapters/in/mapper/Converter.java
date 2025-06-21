@@ -83,15 +83,6 @@ public interface Converter {
     EnderecoDTO paraDto(EnderecoEntity entity); //Retorna um EnderecoDTO passando um EnderecoEntity.
 
 
-//
-//    public TelefoneEntity updateTelefone(TelefoneDTO dto, TelefoneEntity entity){
-//        return TelefoneEntity.builder()
-//                .id(entity.getId())
-//                .ddd(dto.getDdd() != null ? dto.getDdd() : entity.getDdd())
-//                .numero(dto.getNumero() != null ? dto.getNumero() : entity.getNumero())
-//                .build();
-//    }
-
     // Conversão de Telefone
 
     //Para Domain
@@ -100,7 +91,12 @@ public interface Converter {
     // passando uma lista de telefoneEntity.
     List<TelefoneDomain> paraListaDomainn(List<TelefoneDTO> dtoList); //Retorna uma lista de telefoneDomain,
     // passando uma lista de telefoneDTO
-    TelefoneDomain paraDomain(TelefoneDTO dto); //Retorna um telefoneDomain passando um telefoneDTO;
+    @Mapping(target = "usuario_id", ignore = true)
+    TelefoneDomain paraDomain(TelefoneDTO dto, @Context Long idUsuario); //Retorna um telefoneDomain passando um telefoneDTO;
+    @AfterMapping
+            default void setUsuarioId(@MappingTarget TelefoneDomain domain, @Context Long idUsuario){
+        domain.setUsuario_id(idUsuario);
+    }
 
     //Para Entity
     TelefoneEntity paraEntity(TelefoneDomain domain); //Retorna um telefoneEntity passando um telefoneDomain.

@@ -3,14 +3,15 @@ package com.javanauta.usuario.adapters.in.controller;
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.EnderecoDTO;
+import com.javanauta.usuario.adapters.in.dto.response.TelefoneDTO;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.adapters.in.service.IEnderecoService;
+import com.javanauta.usuario.adapters.in.service.ITelefoneSerivce;
 import com.javanauta.usuario.adapters.in.service.IUsuarioService;
-import com.javanauta.usuario.application.service.UsuarioServiceImpl;
-import com.javanauta.usuario.application.service.ViaCepService;
 import com.javanauta.usuario.application.infrastructure.clients.ViaCepDTO;
 import com.javanauta.usuario.application.infrastructure.security.JwtUtil;
 import com.javanauta.usuario.application.infrastructure.security.SecurityConfig;
+import com.javanauta.usuario.application.service.ViaCepService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,6 +32,7 @@ public class UsuarioController {
 
     private final IUsuarioService usuarioService;
     private final IEnderecoService enderecoService;
+    private final ITelefoneSerivce telefoneSerivce;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final ViaCepService viaCepService;
@@ -93,17 +95,17 @@ public class UsuarioController {
                                                         @RequestParam("id") Long id){
         return ResponseEntity.ok(enderecoService.atualizaEndereco(dto, id));
     }
-//
-//    @PutMapping("/telefone")
-//    @Operation(summary = "Altera dados de Telefone do Usuario", description = "Altera dados de Telefone do usuario")
-//    @ApiResponse(responseCode = "200", description = "Dados do telefone alterados")
-//    @ApiResponse(responseCode = "500", description = "Erro de servidor")
-//    @ApiResponse(responseCode = "403", description = "Telefone não encontrado")
-//    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO dto,
-//                                                        @RequestParam("id") Long id){
-//        return ResponseEntity.ok(usuarioServiceImpl.atualizaTelefone(id, dto));
-//    }
-//
+
+    @PutMapping("/telefone")
+    @Operation(summary = "Altera dados de Telefone do Usuario", description = "Altera dados de Telefone do usuario")
+    @ApiResponse(responseCode = "200", description = "Dados do telefone alterados")
+    @ApiResponse(responseCode = "500", description = "Erro de servidor")
+    @ApiResponse(responseCode = "403", description = "Telefone não encontrado")
+    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO dto,
+                                                        @RequestParam("id") Long id){
+        return ResponseEntity.ok(telefoneSerivce.atualizaTelefone(dto, id));
+    }
+
     @PostMapping("/endereco")
     @Operation(summary = "Salva o endereço do Usuario", description = "Cria e salva o endereço do usuario")
     @ApiResponse(responseCode = "200", description = "Endereço cadastrado com sucesso")
@@ -112,15 +114,15 @@ public class UsuarioController {
                                                         @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(enderecoService.cadastraEndereco(dto,token));
     }
-//
-//    @PostMapping("/telefone")
-//    @Operation(summary = "Salva o Telefone do Usuario", description = "Cria e salva o telefone do usuario")
-//    @ApiResponse(responseCode = "200", description = "Telefone cadastrado com sucesso")
-//    @ApiResponse(responseCode = "500", description = "Erro de servidor")
-//    public ResponseEntity<TelefoneDTO> cadastraTelefone(@RequestBody TelefoneDTO dto,
-//                                                        @RequestHeader("Authorization") String token){
-//        return ResponseEntity.ok(usuarioServiceImpl.cadastraTelefone(token, dto));
-//    }
+
+    @PostMapping("/telefone")
+    @Operation(summary = "Salva o Telefone do Usuario", description = "Cria e salva o telefone do usuario")
+    @ApiResponse(responseCode = "200", description = "Telefone cadastrado com sucesso")
+    @ApiResponse(responseCode = "500", description = "Erro de servidor")
+    public ResponseEntity<TelefoneDTO> cadastraTelefone(@RequestBody TelefoneDTO dto,
+                                                        @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(telefoneSerivce.cadastraTelefone(dto,token));
+    }
 
     @GetMapping("/endereco/{cep}")
     @Operation(summary = "Busca dados de Endereço do Usuario via CEP ", description = "Busca dados de endereço do usuario via cep")

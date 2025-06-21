@@ -50,6 +50,6 @@ public class EnderecoServiceImpl implements IEnderecoService {
         EnderecoDomain domainAtualizado =  enderecoRepository.atualizarEndereco(converter.paraDomain(entity));
 
         return converter.paraDto(
-                enderecoRepository.cadastraEndereco(domainAtualizado));
+                enderecoRepository.cadastraEndereco((domainAtualizado)));
     }
 }
