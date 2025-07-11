@@ -42,7 +42,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         try {
             boolean emailExist = verificaEmail(email); //Retorna o email existente com true/false.
             if (emailExist) { //Retorna essa exceção caso o email já exista.
-                throw new ConflictException("Esse email já esta cadastrado ");
+                throw new ConflictException("Esse email já esta cadastrado");
             }
         } catch (ConflictException e) {
             throw new ConflictException("Esse email já esta cadastrado");
@@ -98,28 +98,4 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 usuarioRepository.salvaUsuario(domainAtualizado));
 
     }
-
-//    public TelefoneDTO atualizaTelefone(Long idTelefone, TelefoneDTO telefoneDTO){
-//        TelefoneEntity entity = telefoneRepository.findById(idTelefone).orElseThrow(
-//                () -> new ResourceNotFoundException("ID não encontrado" + idTelefone));
-//
-//        TelefoneEntity telefoneEntity = usuarioConverter.updateTelefone(telefoneDTO, entity);
-//
-//        return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefoneEntity));
-//    }
-//
-
-//    public TelefoneDTO cadastraTelefone(String token, TelefoneDTO dto){
-//        String email = jwtUtil.extractUsername(token.substring(7));
-//
-//        UsuarioEntity usuarioEntity = usuarioRepository.findByEmail(email).orElseThrow(
-//                () -> new ResourceNotFoundException("Email não encontrado " + email));
-//
-//        TelefoneEntity telefoneEntity = usuarioConverter.paraTelefoneEntity(dto, usuarioEntity.getId());
-//
-//        return usuarioConverter.paraTelefoneDTO(
-//                telefoneRepository.save(telefoneEntity)
-//        );
-//    }
-
 }
