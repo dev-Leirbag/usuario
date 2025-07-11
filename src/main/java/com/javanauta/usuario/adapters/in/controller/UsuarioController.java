@@ -9,6 +9,7 @@ import com.javanauta.usuario.adapters.in.service.IEnderecoService;
 import com.javanauta.usuario.adapters.in.service.ITelefoneSerivce;
 import com.javanauta.usuario.adapters.in.service.IUsuarioService;
 import com.javanauta.usuario.application.infrastructure.clients.ViaCepDTO;
+import com.javanauta.usuario.application.infrastructure.exceptions.UnauthorizedException;
 import com.javanauta.usuario.application.infrastructure.security.JwtUtil;
 import com.javanauta.usuario.application.infrastructure.security.SecurityConfig;
 import com.javanauta.usuario.application.service.ViaCepService;
@@ -49,12 +50,8 @@ public class UsuarioController {
     @Operation(summary = "Faz o login do Usuario", description = "Login do usuario")
     @ApiResponse(responseCode = "200", description = "Login efetuado com sucesso")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    public String login(@RequestBody UsuarioDtoRequest dtoRequest){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dtoRequest.getEmail(),
-                        dtoRequest.getSenha())
-        );
-        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+    public ResponseEntity<String> login(@RequestBody UsuarioDtoRequest dtoRequest) throws UnauthorizedException {
+        return ResponseEntity.ok(usuarioService.autenticarUsuario(dtoRequest));
     }
 
     @GetMapping

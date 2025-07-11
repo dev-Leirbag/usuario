@@ -1,5 +1,6 @@
 package com.javanauta.usuario.application.service;
 
+import com.javanauta.usuario.adapters.in.dto.request.UsuarioDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.request.UsuarioUpdateDtoRequest;
 import com.javanauta.usuario.adapters.in.dto.response.UsuarioDtoResponse;
 import com.javanauta.usuario.adapters.in.mapper.Converter;
@@ -9,9 +10,16 @@ import com.javanauta.usuario.adapters.out.entity.UsuarioEntity;
 import com.javanauta.usuario.application.domain.UsuarioDomain;
 import com.javanauta.usuario.application.infrastructure.exceptions.ConflictException;
 import com.javanauta.usuario.application.infrastructure.exceptions.ResourceNotFoundException;
+import com.javanauta.usuario.application.infrastructure.exceptions.UnauthorizedException;
 import com.javanauta.usuario.application.infrastructure.security.JwtUtil;
 import com.javanauta.usuario.porters.out.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioServiceImpl implements IUsuarioService {
 
     private final IUsuarioRepository usuarioRepository;
+    private final AuthenticationManager authenticationManager;
     private final Converter converter;
     private final ConverterUpdate converterUpdate;
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +45,19 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 converter.paraDomain(usuarioDtoResponse)); //Realiza a conversão de um UsuarioDTO para um UsuarioDomain.
 
         return converter.paraDto(usuarioDomain); //Retorna um UsuarioDTO já salvo no banco de dados.
+    }
+
+    @Override
+    public String autenticarUsuario(UsuarioDtoRequest usuarioDtoRequest) throws UnauthorizedException {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(usuarioDtoRequest.getEmail(),
+                            usuarioDtoRequest.getSenha())
+            );
+            return "Bearer " + jwtUtil.generateToken(authentication.getName());
+        }catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e){
+            throw new UnauthorizedException("Usuario ou senha invalidos: ", e.getCause());
+        }
     }
 
     public void emailExiste(String email) {
