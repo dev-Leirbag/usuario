@@ -52,7 +52,7 @@ Esses endpoints são consumidos pelo **BFF**, que os integra com os demais servi
 2. O serviço estará disponível em:
 
     ```
-    http://localhost:8082/swagger-ui.html
+    http://localhost:8080/swagger-ui.html
     ```
 
 ### Executando localmente com Gradle/Maven
