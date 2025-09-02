@@ -4,8 +4,8 @@ Este repositório contém **o microserviço responsável pelo cadastro e autenti
 Ele cuida da criação de contas, login, emissão de tokens JWT e validação de credenciais.
 
 > ℹ️ Este é apenas um dos microsserviços. Ele funciona em conjunto com:  
-> - **Agendamento de Tarefas)**  
-> - **Envio de E-mails)**  
+> - **Agendamento de Tarefas**  
+> - **Envio de E-mails**  
 > - **BFF (Orquestração e Integração)**
 
 ---
@@ -72,7 +72,7 @@ Execute via Gradle ou Maven:
     
 Acesse a documentação da API:
 
-    http://localhost:8082/swagger-ui.html
+    http://localhost:8080/swagger-ui.html
     
 ## Funcionalidades
 
